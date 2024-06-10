@@ -1,5 +1,5 @@
 // Export Pxd client
-export { Pxd } from "./Pxd";
+export { Phoenixd } from "./Phoenixd";
 
 // Export types
 export * from "./types";

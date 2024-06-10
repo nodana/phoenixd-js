@@ -8,7 +8,7 @@ It has been tested against phoenixd version `0.1.5`. When newer versions are rel
 
 ## Installation
 
-```
+```bash
 npm i @nodana/phoenixd-nodejs
 ```
 
@@ -46,25 +46,30 @@ await client.listChannels();
 ### Close Channel
 
 ```js
-await client.closeChannel(channelId, address, feerateSatByte);
+await client.closeChannel(channelId, address, feeRateSatByte);
 ```
 
 ### Create Invoice
 
 ```js
-await client.createInvoice(description, amountSat, externalId);
+await client.createInvoice({
+  description,
+  descriptionHash,
+  amountSat,
+  externalId,
+});
 ```
 
 ### Pay Invoice
 
 ```js
-await client.createInvoice(description, amountSat, externalId);
+await client.payInvoice({ amountSat, invoice });
 ```
 
 ### Send To Address
 
 ```js
-await client.sendToAddress(amountSat, address, feerateSatByte);
+await client.sendToAddress(amountSat, address, feeRateSatByte);
 ```
 
 ### List Incoming Payments
