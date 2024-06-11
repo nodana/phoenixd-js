@@ -38,10 +38,7 @@ export class WebSocketClient extends EventEmitter {
 
   private _onMessage(message: MessageEvent) {
     try {
-      const data = message.toString();
-      const json = JSON.parse(data);
-
-      this.emit(json);
+      this.emit("message", message);
     } catch (e: any) {
       this._onError(e);
     }

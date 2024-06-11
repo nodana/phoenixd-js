@@ -98,8 +98,13 @@ export class Phoenixd extends EventEmitter implements IPhoenxid {
     this.emit("close");
   }
 
-  private _onMessage(json: any) {
-    this.emit("message");
+  private _onMessage(message: MessageEvent) {
+    const data = message.toString();
+    const json = JSON.parse(data);
+
+    if (json.type === "payment_received") {
+      this.emit("payment", json);
+    }
   }
 
   private _onError(e: any) {

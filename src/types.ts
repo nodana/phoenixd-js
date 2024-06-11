@@ -133,6 +133,13 @@ export interface IGetBalanceResponse {
 
 export type IListChannelsResponse = IChannel[];
 
+export type IWebsocketResponse = {
+  type: string;
+  amountSat: number;
+  paymentHash: string;
+  externalId: string;
+};
+
 export interface IPhoenxid {
   on(event: string, listener: Function): this;
   getInfo(): Promise<IGetInfoResponse>;

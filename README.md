@@ -69,33 +69,60 @@ await client.payInvoice({ amountSat, invoice });
 ### Send To Address
 
 ```js
-await client.sendToAddress(amountSat, address, feeRateSatByte);
+await client.sendToAddress({ amountSat, address, feeRateSatByte });
 ```
 
 ### List Incoming Payments
 
 ```js
-await client.listIncomingPayments(<tbc>);
+await client.listIncomingPayments({ from, to, limit, offset, all, externalId });
 ```
 
 ### Get Incoming Payment
 
 ```js
-await client.getIncomingPayment(<tbc>);
+await client.getIncomingPayment(paymentHash);
 ```
 
 ### List Outgoing Payments
 
 ```js
-await client.listOutgoingPayments(<tbc>);
+await client.listOutgoingPayments({ from, to, limit, offset, all });
 ```
 
 ### Get Outgoing Payment
 
 ```js
-await client.getOutgoingPayment(<tbc>);
+await client.getOutgoingPayment(paymentId);
 ```
 
-## Websocket Events
+## Websockets
 
-In progress...
+This sdk will not automatically connect to the websocket endoint. If you would like it to connect then pass `ws: true` when creating the instance.
+
+### Events
+
+You can listen to the following events: `open`, `close`, `error` and `payment`.
+
+### Open Event
+
+Fired when a connection to your node's websocket endpoint has been established.
+
+### Close Event
+
+Fired when a connection to your node's websocket ends.
+
+### Error Event
+
+Fired when there is an error with the websocket connection.
+
+### Payment Event
+
+Fired when your node receives a payment.
+
+```js
+client.on("payment", data, (payment: WebsocketResponse) => {
+  const { type, amountSat, paymentHash, externalId } = payment;
+  // Handle payment here
+});
+```
