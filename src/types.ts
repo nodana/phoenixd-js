@@ -1,12 +1,3 @@
-export interface IChannelCompact {
-  state: string;
-  channelId: string;
-  balanceSat: number;
-  inboundLiquiditySat: number;
-  capacitySat: number;
-  fundingTxId: string;
-}
-
 export interface ILocalParams {
   nodeId: string;
   fundingKeyPath: string;
@@ -48,6 +39,15 @@ export interface IChannelUpdate {
   feeBaseMsat: number;
   feeProportionalMillionths: number;
   htlcMaximumMsat: number;
+}
+
+export interface IChannelCompact {
+  state: string;
+  channelId: string;
+  balanceSat: number;
+  inboundLiquiditySat: number;
+  capacitySat: number;
+  fundingTxId: string;
 }
 
 export interface IChannel {
@@ -133,14 +133,7 @@ export interface IGetBalanceResponse {
 
 export type IListChannelsResponse = IChannel[];
 
-export type IWebsocketResponse = {
-  type: string;
-  amountSat: number;
-  paymentHash: string;
-  externalId: string;
-};
-
-export interface IPhoenxid {
+export interface Phoenxid {
   on(event: string, listener: Function): this;
   getInfo(): Promise<IGetInfoResponse>;
   getBalance(): Promise<IGetBalanceResponse>;
@@ -152,7 +145,13 @@ export interface IPhoenxid {
   }: ICloseChannelParams): Promise<string>;
 }
 
-export interface IPhoenixdOptions {
+export interface PhoenixdOptions {
   ws?: boolean;
-  debug?: boolean;
 }
+
+export type Payment = {
+  type: string;
+  amountSat: number;
+  paymentHash: string;
+  externalId: string;
+};

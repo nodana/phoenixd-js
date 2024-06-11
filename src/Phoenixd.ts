@@ -2,8 +2,8 @@ import { EventEmitter } from "events";
 import { HttpClient, IHttpClient } from "./HttpClient";
 import { WebSocketClient, IWebSocketClient } from "./WebSocketClient";
 import type {
-  IPhoenxid,
-  IPhoenixdOptions,
+  Phoenxid as PhoenxidType,
+  PhoenixdOptions as PhoenixdOptionsType,
   ICreateInvoiceParams,
   IPayInvoiceParams,
   ICloseChannelParams,
@@ -12,20 +12,19 @@ import type {
   IListOutgoingPaymentsParams,
 } from "./types";
 
-const defaultOptions: IPhoenixdOptions = {
-  // Connect to the websocket endpoint
+const defaultOptions: PhoenixdOptionsType = {
   ws: false,
 };
 
-export class Phoenixd extends EventEmitter implements IPhoenxid {
-  private _options: IPhoenixdOptions;
+export class Phoenixd extends EventEmitter implements PhoenxidType {
+  private _options: PhoenixdOptionsType;
   private _httpClient: IHttpClient;
   private _webSocketClient: IWebSocketClient | undefined;
 
   public constructor(
     url: string,
     password: string,
-    options?: IPhoenixdOptions
+    options?: PhoenixdOptionsType
   ) {
     super();
 
