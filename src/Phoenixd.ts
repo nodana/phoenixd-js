@@ -7,13 +7,14 @@ import type {
   ICreateInvoiceParams,
   IPayInvoiceParams,
   ICloseChannelParams,
+  ISendToAddressParams,
+  IListIncomingPaymentsParams,
+  IListOutgoingPaymentsParams,
 } from "./types";
 
 const defaultOptions: IPhoenixdOptions = {
   // Connect to the websocket endpoint
   ws: false,
-  // Display console logs
-  debug: false,
 };
 
 export class Phoenixd extends EventEmitter implements IPhoenxid {
@@ -41,6 +42,38 @@ export class Phoenixd extends EventEmitter implements IPhoenxid {
     }
   }
 
+  public async createInvoice(params: ICreateInvoiceParams) {
+    return this._httpClient.post("/createinvoice", params);
+  }
+
+  public async payInvoice(params: IPayInvoiceParams) {
+    return this._httpClient.post("/payinvoice", params);
+  }
+
+  public async sendToAddress(params: ISendToAddressParams) {
+    return this._httpClient.post("/sendtoaddress", params);
+  }
+
+  public async listIncomingPayments(params: IListIncomingPaymentsParams) {
+    // @ts-ignore
+    const qs = new URLSearchParams(params).toString();
+    return this._httpClient.get(`/payments/incoming?${qs}`);
+  }
+
+  public async getIncomingPayment(paymentHash: string) {
+    return this._httpClient.get(`/payments/incoming/${paymentHash}`);
+  }
+
+  public async listOutgoingPayments(params: IListOutgoingPaymentsParams) {
+    // @ts-ignore
+    const qs = new URLSearchParams(params).toString();
+    return this._httpClient.get(`/payments/outgoing?${qs}`);
+  }
+
+  public async getOutoingPayment(paymentId: string) {
+    return this._httpClient.get(`/payments/outgoing/${paymentId}`);
+  }
+
   public async getInfo() {
     return this._httpClient.get("/getinfo");
   }
@@ -54,15 +87,7 @@ export class Phoenixd extends EventEmitter implements IPhoenxid {
   }
 
   public async closeChannel(params: ICloseChannelParams) {
-    return this._httpClient.post("/closechannel", params);
-  }
-
-  public async createInvoice(params: ICreateInvoiceParams) {
-    return this._httpClient.post("/createinvoice", params);
-  }
-
-  public async payInvoice(params: IPayInvoiceParams) {
-    return this._httpClient.post("/createinvoice", params);
+    return this._httpClient.post("/sendtoaddress", params);
   }
 
   private _onOpen() {

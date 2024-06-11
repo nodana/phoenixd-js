@@ -84,6 +84,43 @@ export interface IPayInvoiceParams {
   amountSat?: number;
 }
 
+export interface ISendToAddressParams {
+  /** amount in satoshi */
+  amountSat: number;
+  /** Bitcoin address where funds will be sent */
+  address: string;
+  /** feerate in satoshi per vbyte */
+  feeRateSatByte: number;
+}
+
+export interface IListIncomingPaymentsParams {
+  /** start timestamp in millis from epoch, default 0 */
+  from?: Date;
+  /** end timestamp in millis from epoch, default now */
+  to?: Date;
+  /** number of payments in the page, default 20 */
+  limit?: number;
+  /** page offset, default 0 */
+  offset?: number;
+  /** also return unpaid invoices */
+  all?: boolean;
+  /** only include payments that use this external id */
+  externalId?: string;
+}
+
+export interface IListOutgoingPaymentsParams {
+  /** start timestamp in millis from epoch, default 0 */
+  from?: Date;
+  /** end timestamp in millis from epoch, default now */
+  to?: Date;
+  /** number of payments in the page, default 20 */
+  limit?: number;
+  /** page offset, default 0 */
+  offset?: number;
+  /** also return unpaid invoices */
+  all?: boolean;
+}
+
 export interface IGetInfoResponse {
   nodeId: string;
   channels: IChannelCompact[];
