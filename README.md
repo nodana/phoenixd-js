@@ -104,7 +104,7 @@ pxd.connect();
 You can also disconnect the websocket connection using:
 
 ```js
-pxd.disconnect()`
+pxd.disconnect();
 ```
 
 ### Events

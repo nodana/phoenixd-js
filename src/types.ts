@@ -180,7 +180,6 @@ export interface OutgoingPayment {
 }
 
 export interface PhoenixdClient {
-  on(event: "open" | "close" | "message" | "error", listener: Function): this;
   createInvoice(params: CreateInvoiceParams): Promise<CreateInvoiceResponse>;
   payInvoice(params: PayInvoiceParams): Promise<PayInvoiceResponse>;
   sendToAddress(params: SendToAddressParams): Promise<string>;
@@ -196,6 +195,9 @@ export interface PhoenixdClient {
   getBalance(): Promise<GetBalanceResponse>;
   listChannels(): Promise<ListChannelsResponse>;
   closeChannel(params: CloseChannelParams): Promise<string>;
+  /** connect to websocket endpoint */
   connect(): void;
+  /** disconnect from websocket endpoint */
   disconnect(): void;
+  on(event: "open" | "close" | "message" | "error", listener: Function): this;
 }

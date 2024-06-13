@@ -26,6 +26,13 @@ export class Phoenixd extends EventEmitter implements PhoenixdClient {
   }
 
   public async createInvoice(params: CreateInvoiceParams) {
+    if (!params.description && !params.descriptionHash) {
+      console.info(
+        "Either 'description' or 'descriptionHash' must be provided"
+      );
+      return;
+    }
+
     return this._httpClient.post("/createinvoice", params);
   }
 
