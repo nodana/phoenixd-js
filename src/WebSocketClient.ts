@@ -6,7 +6,7 @@ export interface IWebSocketClient {
 }
 
 export class WebSocketClient extends EventEmitter {
-  socket: WebSocket;
+  private socket: WebSocket;
 
   constructor(url: string, password: string) {
     super();

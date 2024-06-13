@@ -4,12 +4,12 @@ import { WebSocketClient, IWebSocketClient } from "./WebSocketClient";
 import type {
   Phoenxid as PhoenxidType,
   PhoenixdOptions as PhoenixdOptionsType,
-  ICreateInvoiceParams,
-  IPayInvoiceParams,
-  ICloseChannelParams,
-  ISendToAddressParams,
-  IListIncomingPaymentsParams,
-  IListOutgoingPaymentsParams,
+  CreateInvoiceParams,
+  PayInvoiceParams,
+  CloseChannelParams,
+  SendToAddressParams,
+  ListIncomingPaymentsParams,
+  ListOutgoingPaymentsParams,
 } from "./types";
 
 const defaultOptions: PhoenixdOptionsType = {
@@ -41,35 +41,47 @@ export class Phoenixd extends EventEmitter implements PhoenxidType {
     }
   }
 
-  public async createInvoice(params: ICreateInvoiceParams) {
+  public async createInvoice(params: CreateInvoiceParams) {
     return this._httpClient.post("/createinvoice", params);
   }
 
-  public async payInvoice(params: IPayInvoiceParams) {
+  public async payInvoice(params: PayInvoiceParams) {
     return this._httpClient.post("/payinvoice", params);
   }
 
-  public async sendToAddress(params: ISendToAddressParams) {
+  public async sendToAddress(params: SendToAddressParams) {
     return this._httpClient.post("/sendtoaddress", params);
   }
 
-  public async listIncomingPayments(params: IListIncomingPaymentsParams) {
-    // @ts-ignore
-    const qs = new URLSearchParams(params).toString();
-    return this._httpClient.get(`/payments/incoming?${qs}`);
+  public async listIncomingPayments(params?: ListIncomingPaymentsParams) {
+    let path = "/payments/incoming";
+
+    if (params) {
+      // @ts-ignore
+      const qs = new URLSearchParams(params).toString();
+      path += `?${qs}`;
+    }
+
+    return this._httpClient.get(path);
   }
 
   public async getIncomingPayment(paymentHash: string) {
     return this._httpClient.get(`/payments/incoming/${paymentHash}`);
   }
 
-  public async listOutgoingPayments(params: IListOutgoingPaymentsParams) {
-    // @ts-ignore
-    const qs = new URLSearchParams(params).toString();
-    return this._httpClient.get(`/payments/outgoing?${qs}`);
+  public async listOutgoingPayments(params?: ListOutgoingPaymentsParams) {
+    let path = "/payments/outgoing";
+
+    if (params) {
+      // @ts-ignore
+      const qs = new URLSearchParams(params).toString();
+      path += `?${qs}`;
+    }
+
+    return this._httpClient.get(path);
   }
 
-  public async getOutoingPayment(paymentId: string) {
+  public async getOutgoingPayment(paymentId: string) {
     return this._httpClient.get(`/payments/outgoing/${paymentId}`);
   }
 
@@ -85,7 +97,7 @@ export class Phoenixd extends EventEmitter implements PhoenxidType {
     return this._httpClient.get("/listchannels");
   }
 
-  public async closeChannel(params: ICloseChannelParams) {
+  public async closeChannel(params: CloseChannelParams) {
     return this._httpClient.post("/sendtoaddress", params);
   }
 
@@ -102,7 +114,11 @@ export class Phoenixd extends EventEmitter implements PhoenxidType {
     const json = JSON.parse(data);
 
     if (json.type === "payment_received") {
-      this.emit("payment", json);
+      this.emit("payment", {
+        amountSat: json.amountSat,
+        paymentHash: json.paymentHash,
+        externalId: json.externalId,
+      });
     }
   }
 

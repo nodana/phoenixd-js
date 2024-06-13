@@ -8,14 +8,16 @@ This is a simple NodeJS client that makes it easier for developers to connect to
 npm install @nodana/phoenixd-js
 ```
 
-## Create a client
+## Getting Started
 
 ```js
-import Phoenixd from @nodana/phoenixd-nodejs;
+import Phoenixd, { GetInfoResponse } from @nodana/phoenixd-js;
 
-const client = new Phoenixd(url, password, {
+const pxd = new Phoenixd(url, password, {
   ws: true, // connect to websock endpoint (default false)
 });
+
+const info: GetInfoResponse = await pxd.getInfo();
 ```
 
 ## Methods
@@ -23,31 +25,31 @@ const client = new Phoenixd(url, password, {
 ### Get Client Info
 
 ```js
-await client.getInfo();
+getInfo();
 ```
 
 ### Get Balance
 
 ```js
-await client.getBalance();
+getBalance();
 ```
 
 ### List Channels
 
 ```js
-await client.listChannels();
+listChannels();
 ```
 
 ### Close Channel
 
 ```js
-await client.closeChannel(channelId, address, feeRateSatByte);
+closeChannel({ channelId, address, feeRateSatByte });
 ```
 
 ### Create Invoice
 
 ```js
-await client.createInvoice({
+createInvoice({
   description,
   descriptionHash,
   amountSat,
@@ -58,37 +60,37 @@ await client.createInvoice({
 ### Pay Invoice
 
 ```js
-await client.payInvoice({ amountSat, invoice });
+payInvoice({ amountSat, invoice });
 ```
 
 ### Send To Address
 
 ```js
-await client.sendToAddress({ amountSat, address, feeRateSatByte });
+sendToAddress({ amountSat, address, feeRateSatByte });
 ```
 
 ### List Incoming Payments
 
 ```js
-await client.listIncomingPayments({ from, to, limit, offset, all, externalId });
+listIncomingPayments({ from, to, limit, offset, all, externalId });
 ```
 
 ### Get Incoming Payment
 
 ```js
-await client.getIncomingPayment(paymentHash);
+getIncomingPayment(paymentHash);
 ```
 
 ### List Outgoing Payments
 
 ```js
-await client.listOutgoingPayments({ from, to, limit, offset, all });
+listOutgoingPayments({ from, to, limit, offset, all });
 ```
 
 ### Get Outgoing Payment
 
 ```js
-await client.getOutgoingPayment(paymentId);
+getOutgoingPayment(paymentId);
 ```
 
 ## Websockets
@@ -97,7 +99,11 @@ This sdk will not automatically connect to the websocket endoint. If you would l
 
 ### Events
 
-You can listen to the following events: `open`, `close`, `error` and `payment`.
+You can listen to the following events: `open`, `close`, `error` and `payment`:
+
+```js
+pxd.on("<event>", handler);
+```
 
 ### Open Event
 
@@ -105,7 +111,7 @@ Fired when a connection to your node's websocket endpoint has been established.
 
 ### Close Event
 
-Fired when a connection to your node's websocket ends.
+Fired when a connection to your node's websocket closes.
 
 ### Error Event
 
@@ -116,7 +122,17 @@ Fired when there is an error with the websocket connection.
 Fired when your node receives a payment.
 
 ```js
-client.on("payment", data, (payment: Payment) => {
-  // Handle payment here
+pxd.on("payment", (payment: Payment) => {
+  console.log(payment);
 });
+```
+
+A payment looks like this:
+
+```json
+{
+  "amountSat": 1000,
+  "paymentHash": "8ffcc4bf33a2e0db2f4e884784483ea105391238e4edf874531803ec41ab4518",
+  "externalId": "1234567890"
+}
 ```

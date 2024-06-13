@@ -1,4 +1,4 @@
-export interface ILocalParams {
+export interface LocalParams {
   nodeId: string;
   fundingKeyPath: string;
   dustLimit: number;
@@ -9,25 +9,25 @@ export interface ILocalParams {
   isInitiator: boolean;
 }
 
-export interface IRemoteParams {
+export interface RemoteParams {
   nodeId: string;
   dustLimit: number;
   maxHtlcValueInFlightMsat: number;
   htlcMinimum: number;
 }
 
-export interface ICommitments {
+export interface Commitments {
   params: {
     channelId: string;
     channelConfig: string[];
     channelFeatures: string[];
-    localParams: ILocalParams;
-    remoteParams: IRemoteParams;
+    localParams: LocalParams;
+    remoteParams: RemoteParams;
     channelFlags: number;
   };
 }
 
-export interface IChannelUpdate {
+export interface ChannelUpdate {
   signature: string;
   chainHash: string;
   shortChannelId: string;
@@ -41,7 +41,7 @@ export interface IChannelUpdate {
   htlcMaximumMsat: number;
 }
 
-export interface IChannelCompact {
+export interface ChannelCompact {
   state: string;
   channelId: string;
   balanceSat: number;
@@ -50,14 +50,14 @@ export interface IChannelCompact {
   fundingTxId: string;
 }
 
-export interface IChannel {
+export interface Channel {
   type: string;
-  commitments: ICommitments;
+  commitments: Commitments;
   shortChannelId: string;
-  channelUpdate: IChannelUpdate;
+  channelUpdate: ChannelUpdate;
 }
 
-export interface ICloseChannelParams {
+export interface CloseChannelParams {
   /** identifier of the channel to close */
   channelId: string;
   /** bitcoin address where your balance will be sent to */
@@ -66,7 +66,7 @@ export interface ICloseChannelParams {
   feeRateSatByte: number;
 }
 
-export interface ICreateInvoiceParams {
+export interface CreateInvoiceParams {
   /** the description of the invoice (max. 128 characters) */
   description?: string;
   /** sha256 hash of a description */
@@ -77,14 +77,14 @@ export interface ICreateInvoiceParams {
   externalId?: string;
 }
 
-export interface IPayInvoiceParams {
+export interface PayInvoiceParams {
   /** BOLT11 invoice */
   invoice: string;
   /**  optional amount in satoshi. If unset, will pay the amount requested in the invoice */
   amountSat?: number;
 }
 
-export interface ISendToAddressParams {
+export interface SendToAddressParams {
   /** amount in satoshi */
   amountSat: number;
   /** Bitcoin address where funds will be sent */
@@ -93,7 +93,7 @@ export interface ISendToAddressParams {
   feeRateSatByte: number;
 }
 
-export interface IListIncomingPaymentsParams {
+export interface ListIncomingPaymentsParams {
   /** start timestamp in millis from epoch, default 0 */
   from?: Date;
   /** end timestamp in millis from epoch, default now */
@@ -108,7 +108,7 @@ export interface IListIncomingPaymentsParams {
   externalId?: string;
 }
 
-export interface IListOutgoingPaymentsParams {
+export interface ListOutgoingPaymentsParams {
   /** start timestamp in millis from epoch, default 0 */
   from?: Date;
   /** end timestamp in millis from epoch, default now */
@@ -121,28 +121,28 @@ export interface IListOutgoingPaymentsParams {
   all?: boolean;
 }
 
-export interface IGetInfoResponse {
+export interface GetInfoResponse {
   nodeId: string;
-  channels: IChannelCompact[];
+  channels: ChannelCompact[];
 }
 
-export interface IGetBalanceResponse {
+export interface GetBalanceResponse {
   balanceSat: number;
   feeCreditSat: number;
 }
 
-export type IListChannelsResponse = IChannel[];
+export type ListChannelsResponse = Channel[];
 
 export interface Phoenxid {
   on(event: string, listener: Function): this;
-  getInfo(): Promise<IGetInfoResponse>;
-  getBalance(): Promise<IGetBalanceResponse>;
-  listChannels(): Promise<IListChannelsResponse>;
+  getInfo(): Promise<GetInfoResponse>;
+  getBalance(): Promise<GetBalanceResponse>;
+  listChannels(): Promise<ListChannelsResponse>;
   closeChannel({
     channelId,
     address,
     feeRateSatByte,
-  }: ICloseChannelParams): Promise<string>;
+  }: CloseChannelParams): Promise<string>;
 }
 
 export interface PhoenixdOptions {
