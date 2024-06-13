@@ -121,6 +121,20 @@ export interface ListOutgoingPaymentsParams {
   all?: boolean;
 }
 
+export interface CreateInvoiceResponse {
+  amountSat: number;
+  paymentHash: string;
+  serialized: string;
+}
+
+export interface PayInvoiceResponse {
+  recipientAmountSat: number;
+  routingFeeSat: number;
+  paymentId: string;
+  paymentHash: string;
+  paymentPreimage: string;
+}
+
 export interface GetInfoResponse {
   nodeId: string;
   channels: ChannelCompact[];
@@ -133,25 +147,55 @@ export interface GetBalanceResponse {
 
 export type ListChannelsResponse = Channel[];
 
-export interface Phoenxid {
-  on(event: string, listener: Function): this;
-  getInfo(): Promise<GetInfoResponse>;
-  getBalance(): Promise<GetBalanceResponse>;
-  listChannels(): Promise<ListChannelsResponse>;
-  closeChannel({
-    channelId,
-    address,
-    feeRateSatByte,
-  }: CloseChannelParams): Promise<string>;
-}
-
-export interface PhoenixdOptions {
-  ws?: boolean;
-}
-
-export type Payment = {
+export interface Payment {
   type: string;
   amountSat: number;
   paymentHash: string;
   externalId: string;
-};
+}
+
+export interface IncomingPayment {
+  paymentHash: string;
+  preimage: string;
+  externalId: string;
+  description: string;
+  invoice: string;
+  isPaid: boolean;
+  receivedSat: number;
+  fees: number;
+  completedAt: Date | null;
+  createdAt: Date;
+}
+
+export interface OutgoingPayment {
+  paymentId: string;
+  paymentHash: string;
+  preimage: string;
+  isPaid: boolean;
+  sent: number;
+  fees: number;
+  invoice: string;
+  completedAt: Date | null;
+  createdAt: Date;
+}
+
+export interface PhoenixdClient {
+  on(event: "open" | "close" | "message" | "error", listener: Function): this;
+  createInvoice(params: CreateInvoiceParams): Promise<CreateInvoiceResponse>;
+  payInvoice(params: PayInvoiceParams): Promise<PayInvoiceResponse>;
+  sendToAddress(params: SendToAddressParams): Promise<string>;
+  listIncomingPayments(
+    params?: ListIncomingPaymentsParams
+  ): Promise<IncomingPayment[]>;
+  getIncomingPayment(paymentHash: string): Promise<IncomingPayment>;
+  listOutgoingPayments(
+    params?: ListOutgoingPaymentsParams
+  ): Promise<OutgoingPayment[]>;
+  getOutgoingPayment(paymentId: string): Promise<OutgoingPayment>;
+  getInfo(): Promise<GetInfoResponse>;
+  getBalance(): Promise<GetBalanceResponse>;
+  listChannels(): Promise<ListChannelsResponse>;
+  closeChannel(params: CloseChannelParams): Promise<string>;
+  connect(): void;
+  disconnect(): void;
+}

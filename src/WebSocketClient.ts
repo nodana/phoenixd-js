@@ -3,6 +3,7 @@ import { EventEmitter } from "events";
 
 export interface IWebSocketClient {
   on(event: string, listener: Function): this;
+  disconnect(): void;
 }
 
 export class WebSocketClient extends EventEmitter {
@@ -24,6 +25,11 @@ export class WebSocketClient extends EventEmitter {
     this.socket.on("error", this._onError.bind(this));
   }
 
+  public disconnect() {
+    this.socket.close();
+    this.socket.terminate();
+  }
+
   private _getWebsocketEndpoint(url: string) {
     return `${url}/websocket`;
   }
@@ -37,14 +43,10 @@ export class WebSocketClient extends EventEmitter {
   }
 
   private _onMessage(message: MessageEvent) {
-    try {
-      this.emit("message", message);
-    } catch (e: any) {
-      this._onError(e);
-    }
+    this.emit("message", message);
   }
 
   private _onError(e: Error) {
-    this.emit("error", { message: e.message });
+    this.emit("error", e);
   }
 }

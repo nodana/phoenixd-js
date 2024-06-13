@@ -2,8 +2,7 @@ import { EventEmitter } from "events";
 import { HttpClient, IHttpClient } from "./HttpClient";
 import { WebSocketClient, IWebSocketClient } from "./WebSocketClient";
 import type {
-  Phoenxid as PhoenxidType,
-  PhoenixdOptions as PhoenixdOptionsType,
+  PhoenixdClient,
   CreateInvoiceParams,
   PayInvoiceParams,
   CloseChannelParams,
@@ -12,33 +11,18 @@ import type {
   ListOutgoingPaymentsParams,
 } from "./types";
 
-const defaultOptions: PhoenixdOptionsType = {
-  ws: false,
-};
-
-export class Phoenixd extends EventEmitter implements PhoenxidType {
-  private _options: PhoenixdOptionsType;
+export class Phoenixd extends EventEmitter implements PhoenixdClient {
+  private url: string;
+  private password: string;
   private _httpClient: IHttpClient;
   private _webSocketClient: IWebSocketClient | undefined;
 
-  public constructor(
-    url: string,
-    password: string,
-    options?: PhoenixdOptionsType
-  ) {
+  public constructor(url: string, password: string) {
     super();
 
-    this._options = { ...defaultOptions, ...options };
+    this.url = url;
+    this.password = password;
     this._httpClient = new HttpClient(url, password);
-
-    if (this._options?.ws === true) {
-      this._webSocketClient = new WebSocketClient(url, password);
-
-      this._webSocketClient.on("open", this._onOpen.bind(this));
-      this._webSocketClient.on("close", this._onClose.bind(this));
-      this._webSocketClient.on("message", this._onMessage.bind(this));
-      this._webSocketClient.on("error", this._onError.bind(this));
-    }
   }
 
   public async createInvoice(params: CreateInvoiceParams) {
@@ -101,6 +85,19 @@ export class Phoenixd extends EventEmitter implements PhoenxidType {
     return this._httpClient.post("/sendtoaddress", params);
   }
 
+  public connect() {
+    this._webSocketClient = new WebSocketClient(this.url, this.password);
+
+    this._webSocketClient.on("open", this._onOpen.bind(this));
+    this._webSocketClient.on("close", this._onClose.bind(this));
+    this._webSocketClient.on("message", this._onMessage.bind(this));
+    this._webSocketClient.on("error", this._onError.bind(this));
+  }
+
+  public disconnect() {
+    this._webSocketClient?.disconnect();
+  }
+
   private _onOpen() {
     this.emit("open");
   }
@@ -110,19 +107,10 @@ export class Phoenixd extends EventEmitter implements PhoenxidType {
   }
 
   private _onMessage(message: MessageEvent) {
-    const data = message.toString();
-    const json = JSON.parse(data);
-
-    if (json.type === "payment_received") {
-      this.emit("payment", {
-        amountSat: json.amountSat,
-        paymentHash: json.paymentHash,
-        externalId: json.externalId,
-      });
-    }
+    this.emit("message", message);
   }
 
   private _onError(e: any) {
-    this.emit("error");
+    this.emit("error", { error: e.message });
   }
 }

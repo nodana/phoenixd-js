@@ -1,6 +1,6 @@
-# NodeJS Phoenxid Client
+# Phoenxid NodeJS Client
 
-This is a simple NodeJS client that makes it easier for developers to connect to their Phoenixd node and make requests. You do **not** need a Nodana hosted node to use this package.
+Whether you're hosting your Phoenixd node on [Nodana](https://nodana.io) or hosting it somewhere else, this package makes it easier for you to make requests against your node and connect to the websocket endpoint.
 
 ## Installation
 
@@ -13,10 +13,10 @@ npm install @nodana/phoenixd-js
 ```js
 import Phoenixd, { GetInfoResponse } from @nodana/phoenixd-js;
 
-const pxd = new Phoenixd(url, password, {
-  ws: true, // connect to websock endpoint (default false)
-});
+const pxd = new Phoenixd(connectionUrl, password);
+...
 
+// Called within an async function
 const info: GetInfoResponse = await pxd.getInfo();
 ```
 
@@ -95,7 +95,17 @@ getOutgoingPayment(paymentId);
 
 ## Websockets
 
-This sdk will not automatically connect to the websocket endoint. If you would like it to connect then pass `ws: true` when creating the instance.
+To connect to the websocket endpoint you need to call the `connect` method:
+
+```js
+pxd.connect();
+```
+
+You can also disconnect the websocket connection using:
+
+```js
+pxd.disconnect()`
+```
 
 ### Events
 
@@ -104,6 +114,8 @@ You can listen to the following events: `open`, `close`, `error` and `payment`:
 ```js
 pxd.on("<event>", handler);
 ```
+
+You will then be able to add listeners for the following events;
 
 ### Open Event
 
