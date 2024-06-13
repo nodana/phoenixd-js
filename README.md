@@ -109,7 +109,7 @@ pxd.disconnect();
 
 ### Events
 
-You can listen to the following events: `open`, `close`, `error` and `payment`:
+You can listen to the following events: `open`, `close`, `message` and `error`:
 
 ```js
 pxd.on("<event>", handler);
@@ -129,22 +129,22 @@ Fired when a connection to your node's websocket closes.
 
 Fired when there is an error with the websocket connection.
 
-### Payment Event
+### Message Event
 
-Fired when your node receives a payment.
+Fired when a message event is received.
 
 ```js
-pxd.on("payment", (payment: Payment) => {
-  console.log(payment);
+pxd.on("message", (message: MessageEvent) => {
+  const data = message.toString();
+  const json = JSON.parse(data);
+
+  console.log(json);
+
+  // {
+  // "type": "payment_received",
+  // "amountSat": 100,
+  // "paymentHash": "f419207c9edde9021ebfb6bd0df6bd0a6606ecaf935357cc2f362e30835c3765",
+  // "externalId": "foobar"
+  // }
 });
-```
-
-A payment looks like this:
-
-```json
-{
-  "amountSat": 1000,
-  "paymentHash": "8ffcc4bf33a2e0db2f4e884784483ea105391238e4edf874531803ec41ab4518",
-  "externalId": "1234567890"
-}
 ```
