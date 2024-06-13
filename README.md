@@ -1,6 +1,6 @@
 # Phoenxid NodeJS Client
 
-Whether you're hosting your Phoenixd node on [Nodana](https://nodana.io) or hosting it somewhere else, this package makes it easier for you to make requests against your node and connect to the websocket endpoint.
+Whether you're hosting your Phoenixd node on [Nodana](https://nodana.io) or self-hosting, this package makes it easier for you to make requests against your node as well as connect to the websocket endpoint and listen for events.
 
 ## Installation
 
@@ -93,7 +93,7 @@ listOutgoingPayments({ from, to, limit, offset, all });
 getOutgoingPayment(paymentId);
 ```
 
-## Websockets
+## Websocket
 
 To connect to the websocket endpoint you need to call the `connect` method:
 
@@ -109,13 +109,11 @@ pxd.disconnect();
 
 ### Events
 
-You can listen to the following events: `open`, `close`, `message` and `error`:
+You can listen to the following events: `open`, `close`, `message` and `error` by using the `on` method:
 
 ```js
 pxd.on("<event>", handler);
 ```
-
-You will then be able to add listeners for the following events;
 
 ### Open Event
 
@@ -148,3 +146,13 @@ pxd.on("message", (message: MessageEvent) => {
   // }
 });
 ```
+
+## Contributing
+
+Contributions to this project are welcomed:
+
+1. Fork repo
+2. Create feature branch
+3. Create PR
+
+I will review as soon as possible.
