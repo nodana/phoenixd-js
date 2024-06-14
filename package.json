@@ -1,7 +1,7 @@
 {
   "name": "@nodana/phoenixd-js",
   "version": "0.1.0",
-  "description": "",
+  "description": "A NodeJS client for Phoenixd Lightning nodes",
   "main": "dist/cjs/index.js",
   "module": "dist/es6/index.js",
   "types": "dist/es6/index.d.ts",
