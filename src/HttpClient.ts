@@ -15,12 +15,13 @@ export class HttpClient implements IHttpClient {
     this.password = password;
     this.headers = {};
 
-    this._setHeaders(password);
+    this._setHeaders();
   }
 
-  private _setHeaders(password: string) {
+  private _setHeaders() {
     this.headers = {
-      Authorization: "Basic " + Buffer.from(":" + password).toString("base64"),
+      Authorization:
+        "Basic " + Buffer.from(":" + this.password).toString("base64"),
       "Content-Type": "application/x-www-form-urlencoded",
     };
   }
