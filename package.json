@@ -2,6 +2,11 @@
   "name": "@nodana/phoenixd-js",
   "version": "0.1.0",
   "description": "A NodeJS client for Phoenixd Lightning nodes",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nodana/phoenixd-js.git"
+  },
+  "homepage": "https://github.com/nodana/phoenixd-js#readme",
   "main": "dist/cjs/index.js",
   "module": "dist/es6/index.js",
   "types": "dist/es6/index.d.ts",

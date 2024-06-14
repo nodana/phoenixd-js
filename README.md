@@ -14,9 +14,8 @@ npm install @nodana/phoenixd-js
 import Phoenixd, { GetInfoResponse } from @nodana/phoenixd-js;
 
 const pxd = new Phoenixd(connectionUrl, password);
-...
 
-// Called within an async function
+// async
 const info: GetInfoResponse = await pxd.getInfo();
 ```
 
