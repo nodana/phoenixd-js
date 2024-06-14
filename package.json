@@ -9,12 +9,15 @@
     "build:cjs": "tsc",
     "build:es6": "tsc -p tsconfig.es6.json",
     "build": "run-p build:*",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "run-s test build",
     "test": "mocha -r ts-node/register 'tests/**/*.ts'"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "ws": "^8.17.0"
+  },
   "devDependencies": {
     "@types/chai": "^4.3.16",
     "@types/mocha": "^10.0.6",
@@ -32,8 +35,5 @@
   },
   "files": [
     "dist"
-  ],
-  "dependencies": {
-    "ws": "^8.17.0"
-  }
+  ]
 }

@@ -32,15 +32,28 @@ describe("Phoenixd", () => {
     sinon.restore();
   });
 
-  describe("When createInvoice method is called", () => {
-    it("should make correct request", async () => {
-      const data = {
-        description: "Invoice Description",
-        amountSat: 1000,
-      };
-      await pxd.createInvoice(data);
+  describe("createInvoice", () => {
+    describe("When called with a description", () => {
+      it("should make correct request", async () => {
+        const data = {
+          description: "Invoice Description",
+          amountSat: 1000,
+        };
+        await pxd.createInvoice(data);
 
-      expect(postStub).to.have.been.calledWith("/createinvoice", data);
+        expect(postStub).to.have.been.calledWith("/createinvoice", data);
+      });
+    });
+
+    describe("When called without a description or descriptionHash", () => {
+      it("should not make request", async () => {
+        const data = {
+          amountSat: 1000,
+        };
+        await pxd.createInvoice(data);
+
+        expect(postStub).to.have.not.been.called;
+      });
     });
   });
 
@@ -68,21 +81,23 @@ describe("Phoenixd", () => {
     });
   });
 
-  describe("When listIncomingPayments method is called without params", () => {
-    it("should make correct request", async () => {
-      await pxd.listIncomingPayments();
+  describe("listIncomingPayments", () => {
+    describe("When method is called without params", () => {
+      it("should make correct request", async () => {
+        await pxd.listIncomingPayments();
 
-      expect(getStub).to.have.been.calledWith("/payments/incoming");
+        expect(getStub).to.have.been.calledWith("/payments/incoming");
+      });
     });
-  });
 
-  describe("When listIncomingPayments method is called with params", () => {
-    it("should make correct request", async () => {
-      await pxd.listIncomingPayments({ limit: 3, offset: 1, all: true });
+    describe("When method is called with params", () => {
+      it("should make correct request", async () => {
+        await pxd.listIncomingPayments({ limit: 3, offset: 1, all: true });
 
-      expect(getStub).to.have.been.calledWith(
-        "/payments/incoming?limit=3&offset=1&all=true"
-      );
+        expect(getStub).to.have.been.calledWith(
+          "/payments/incoming?limit=3&offset=1&all=true"
+        );
+      });
     });
   });
 
@@ -97,21 +112,23 @@ describe("Phoenixd", () => {
     });
   });
 
-  describe("When listOutgoingPayments method is called without params", () => {
-    it("should make correct request", async () => {
-      await pxd.listOutgoingPayments();
+  describe("listOutgoingPayments", () => {
+    describe("When method is called without params", () => {
+      it("should make correct request", async () => {
+        await pxd.listOutgoingPayments();
 
-      expect(getStub).to.have.been.calledWith("/payments/outgoing");
+        expect(getStub).to.have.been.calledWith("/payments/outgoing");
+      });
     });
-  });
 
-  describe("When listOutgoingPayments method is called with params", () => {
-    it("should make correct request", async () => {
-      await pxd.listOutgoingPayments({ limit: 3, offset: 1, all: true });
+    describe("When listOutgoingPayments method is called with params", () => {
+      it("should make correct request", async () => {
+        await pxd.listOutgoingPayments({ limit: 3, offset: 1, all: true });
 
-      expect(getStub).to.have.been.calledWith(
-        "/payments/outgoing?limit=3&offset=1&all=true"
-      );
+        expect(getStub).to.have.been.calledWith(
+          "/payments/outgoing?limit=3&offset=1&all=true"
+        );
+      });
     });
   });
 

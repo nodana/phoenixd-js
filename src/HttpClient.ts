@@ -39,8 +39,7 @@ export class HttpClient implements IHttpClient {
       const response = await fetch(`${this.url}${path}`, options);
 
       if (!response.ok) {
-        // Log error
-        return;
+        throw Error("Request could not be completed");
       }
 
       return response.json();
