@@ -1,5 +1,5 @@
 // Export Pxd client
-export { Phoenixd as default } from "./Phoenixd";
+export { Phoenixd } from "./Phoenixd";
 
 // Export types
 export * from "./types";

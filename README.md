@@ -11,7 +11,7 @@ npm install @nodana/phoenixd-js
 ## Getting Started
 
 ```js
-import Phoenixd, { GetInfoResponse } from @nodana/phoenixd-js;
+import { Phoenixd, GetInfoResponse } from @nodana/phoenixd-js;
 
 const pxd = new Phoenixd(connectionUrl, password);
 
