@@ -21,30 +21,6 @@ const info: GetInfoResponse = await pxd.getInfo();
 
 ## Methods
 
-### Get Client Info
-
-```js
-getInfo();
-```
-
-### Get Balance
-
-```js
-getBalance();
-```
-
-### List Channels
-
-```js
-listChannels();
-```
-
-### Close Channel
-
-```js
-closeChannel({ channelId, address, feeRateSatByte });
-```
-
 ### Create Invoice
 
 ```js
@@ -60,6 +36,18 @@ createInvoice({
 
 ```js
 payInvoice({ amountSat, invoice });
+```
+
+### Create Offer
+
+```js
+createOffer();
+```
+
+### Pay Offer
+
+```js
+payOffer({ amountSat, offer, message });
 ```
 
 ### Send To Address
@@ -90,6 +78,42 @@ listOutgoingPayments({ from, to, limit, offset, all });
 
 ```js
 getOutgoingPayment(paymentId);
+```
+
+### Get Client Info
+
+```js
+getInfo();
+```
+
+### Get Balance
+
+```js
+getBalance();
+```
+
+### List Channels
+
+```js
+listChannels();
+```
+
+### Close Channel
+
+```js
+closeChannel({ channelId, address, feeRateSatByte });
+```
+
+### Decode Invoice
+
+```js
+decodeInvoice({ invoice });
+```
+
+### Decode Offer
+
+```js
+decodeOffer({ offer });
 ```
 
 ## Websocket
