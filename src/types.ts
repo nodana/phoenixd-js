@@ -211,7 +211,7 @@ export interface OutgoingPayment {
 export interface PhoenixdClient {
   createInvoice(params: CreateInvoiceParams): Promise<CreateInvoiceResponse>;
   payInvoice(params: PayInvoiceParams): Promise<PayInvoiceResponse>;
-  createOffer(params: CreateOfferParams): Promise<string>;
+  createOffer(): Promise<string>;
   payOffer(params: PayOfferParams): Promise<PayOfferResponse>;
   sendToAddress(params: SendToAddressParams): Promise<string>;
   listIncomingPayments(

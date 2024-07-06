@@ -44,8 +44,8 @@ export class Phoenixd extends EventEmitter implements PhoenixdClient {
     return this._httpClient.post("/payinvoice", params);
   }
 
-  public async createOffer(params: CreateOfferParams) {
-    return this._httpClient.post("/createoffer", params);
+  public async createOffer() {
+    return this._httpClient.post("/createoffer", {});
   }
 
   public async payOffer(params: PayOfferParams) {

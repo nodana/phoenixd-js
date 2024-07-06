@@ -68,6 +68,25 @@ describe("Phoenixd", () => {
     });
   });
 
+  describe("When createOffer method is called", () => {
+    it("should make correct request", async () => {
+      await pxd.createOffer();
+
+      expect(postStub).to.have.been.calledWith("/createoffer", {});
+    });
+  });
+
+  describe("When payOffer method is called", () => {
+    it("should make correct request", async () => {
+      const data = {
+        offer: "12345",
+      };
+      await pxd.payOffer(data);
+
+      expect(postStub).to.have.been.calledWith("/payoffer", data);
+    });
+  });
+
   describe("When sendToAddress method is called", () => {
     it("should make correct request", async () => {
       const data = {
@@ -177,6 +196,28 @@ describe("Phoenixd", () => {
       await pxd.closeChannel(data);
 
       expect(postStub).to.have.been.calledWith("/sendtoaddress", data);
+    });
+  });
+
+  describe("When decodeInvoice method is called", () => {
+    it("should make correct request", async () => {
+      const data = {
+        invoice: "12345",
+      };
+      await pxd.decodeInvoice(data);
+
+      expect(postStub).to.have.been.calledWith("/decodeinvoice", data);
+    });
+  });
+
+  describe("When decodeOffer method is called", () => {
+    it("should make correct request", async () => {
+      const data = {
+        offer: "12345",
+      };
+      await pxd.decodeOffer(data);
+
+      expect(postStub).to.have.been.calledWith("/decodeoffer", data);
     });
   });
 });
