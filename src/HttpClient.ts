@@ -45,7 +45,7 @@ export class HttpClient implements IHttpClient {
 
       return response.json();
     } catch (e: any) {
-      throw e.message;
+      throw e;
     }
   }
 

@@ -84,6 +84,17 @@ export interface PayInvoiceParams {
   amountSat?: number;
 }
 
+export interface CreateOfferParams {}
+
+export interface PayOfferParams {
+  /** BOLT12 offer */
+  offer: string;
+  /** optional amount in satoshi. If unset, will pay the amount requested in the invoice */
+  amountSat?: number;
+  /** optional message */
+  message?: string;
+}
+
 export interface SendToAddressParams {
   /** amount in satoshi */
   amountSat: number;
@@ -121,6 +132,16 @@ export interface ListOutgoingPaymentsParams {
   all?: boolean;
 }
 
+export interface DecodeInvoiceParams {
+  /** BOLT11 invoice */
+  invoice: string;
+}
+
+export interface DecodeOfferParams {
+  /** BOLT12 offer */
+  offer: string;
+}
+
 export interface CreateInvoiceResponse {
   amountSat: number;
   paymentHash: string;
@@ -128,6 +149,14 @@ export interface CreateInvoiceResponse {
 }
 
 export interface PayInvoiceResponse {
+  recipientAmountSat: number;
+  routingFeeSat: number;
+  paymentId: string;
+  paymentHash: string;
+  paymentPreimage: string;
+}
+
+export interface PayOfferResponse {
   recipientAmountSat: number;
   routingFeeSat: number;
   paymentId: string;
@@ -182,6 +211,8 @@ export interface OutgoingPayment {
 export interface PhoenixdClient {
   createInvoice(params: CreateInvoiceParams): Promise<CreateInvoiceResponse>;
   payInvoice(params: PayInvoiceParams): Promise<PayInvoiceResponse>;
+  createOffer(params: CreateOfferParams): Promise<string>;
+  payOffer(params: PayOfferParams): Promise<PayOfferResponse>;
   sendToAddress(params: SendToAddressParams): Promise<string>;
   listIncomingPayments(
     params?: ListIncomingPaymentsParams
@@ -195,6 +226,8 @@ export interface PhoenixdClient {
   getBalance(): Promise<GetBalanceResponse>;
   listChannels(): Promise<ListChannelsResponse>;
   closeChannel(params: CloseChannelParams): Promise<string>;
+  decodeInvoice(params: DecodeInvoiceParams): Promise<any>;
+  decodeOffer(params: DecodeOfferParams): Promise<any>;
   /** connect to websocket endpoint */
   connect(): void;
   /** disconnect from websocket endpoint */

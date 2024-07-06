@@ -5,10 +5,14 @@ import type {
   PhoenixdClient,
   CreateInvoiceParams,
   PayInvoiceParams,
+  CreateOfferParams,
+  PayOfferParams,
   CloseChannelParams,
   SendToAddressParams,
   ListIncomingPaymentsParams,
   ListOutgoingPaymentsParams,
+  DecodeInvoiceParams,
+  DecodeOfferParams,
 } from "./types";
 
 export class Phoenixd extends EventEmitter implements PhoenixdClient {
@@ -38,6 +42,14 @@ export class Phoenixd extends EventEmitter implements PhoenixdClient {
 
   public async payInvoice(params: PayInvoiceParams) {
     return this._httpClient.post("/payinvoice", params);
+  }
+
+  public async createOffer(params: CreateOfferParams) {
+    return this._httpClient.post("/createoffer", params);
+  }
+
+  public async payOffer(params: PayOfferParams) {
+    return this._httpClient.post("/payoffer", params);
   }
 
   public async sendToAddress(params: SendToAddressParams) {
@@ -90,6 +102,14 @@ export class Phoenixd extends EventEmitter implements PhoenixdClient {
 
   public async closeChannel(params: CloseChannelParams) {
     return this._httpClient.post("/sendtoaddress", params);
+  }
+
+  public async decodeInvoice(params: DecodeInvoiceParams) {
+    return this._httpClient.post("/decodeinvoice", params);
+  }
+
+  public async decodeOffer(params: DecodeOfferParams) {
+    return this._httpClient.post("/decodeoffer", params);
   }
 
   public connect() {
