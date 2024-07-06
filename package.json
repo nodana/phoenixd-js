@@ -1,6 +1,6 @@
 {
   "name": "@nodana/phoenixd-js",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "A NodeJS client for Phoenixd Lightning nodes",
   "repository": {
     "type": "git",
