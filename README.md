@@ -11,12 +11,12 @@ npm install @nodana/phoenixd-js
 ## Getting Started
 
 ```js
-import { Phoenixd, GetInfoResponse } from @nodana/phoenixd-js;
+import { Phoenixd, NodeInfo } from @nodana/phoenixd-js;
 
 const pxd = new Phoenixd(connectionUrl, password);
 
 // async
-const info: GetInfoResponse = await pxd.getInfo();
+const info: NodeInfo = await pxd.getInfo();
 ```
 
 ## Methods
@@ -157,7 +157,7 @@ Fired when a message event is received.
 ```js
 pxd.on("message", (message: MessageEvent) => {
   const data = message.toString();
-  const json = JSON.parse(data);
+  const json: WebsocketPayment = JSON.parse(data);
 
   console.log(json);
 

@@ -5,9 +5,9 @@ import type {
   PhoenixdClient,
   CreateInvoiceParams,
   PayInvoiceParams,
-  CreateOfferParams,
   PayOfferParams,
   CloseChannelParams,
+  PayLnAddressParams,
   SendToAddressParams,
   ListIncomingPaymentsParams,
   ListOutgoingPaymentsParams,
@@ -50,6 +50,10 @@ export class Phoenixd extends EventEmitter implements PhoenixdClient {
 
   public async payOffer(params: PayOfferParams) {
     return this._httpClient.post("/payoffer", params);
+  }
+
+  public async payLnAddress(params: PayLnAddressParams) {
+    return this._httpClient.post("/sendtoaddress", params);
   }
 
   public async sendToAddress(params: SendToAddressParams) {

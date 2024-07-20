@@ -95,6 +95,15 @@ export interface PayOfferParams {
   message?: string;
 }
 
+export interface PayLnAddressParams {
+  /** ln-url lightning address */
+  address: string;
+  /** amount in satoshi. If unset, will pay the amount requested in the invoice */
+  amountSat?: number;
+  /** feerate in satoshi per vbyte */
+  feeRateSatByte: number;
+}
+
 export interface SendToAddressParams {
   /** amount in satoshi */
   amountSat: number;
@@ -148,7 +157,7 @@ export interface CreateInvoiceResponse {
   serialized: string;
 }
 
-export interface PayInvoiceResponse {
+export interface Payment {
   recipientAmountSat: number;
   routingFeeSat: number;
   paymentId: string;
@@ -156,32 +165,17 @@ export interface PayInvoiceResponse {
   paymentPreimage: string;
 }
 
-export interface PayOfferResponse {
-  recipientAmountSat: number;
-  routingFeeSat: number;
-  paymentId: string;
-  paymentHash: string;
-  paymentPreimage: string;
-}
-
-export interface GetInfoResponse {
+export interface NodeInfo {
   nodeId: string;
   channels: ChannelCompact[];
 }
 
-export interface GetBalanceResponse {
+export interface Balance {
   balanceSat: number;
   feeCreditSat: number;
 }
 
 export type ListChannelsResponse = Channel[];
-
-export interface Payment {
-  type: string;
-  amountSat: number;
-  paymentHash: string;
-  externalId: string;
-}
 
 export interface IncomingPayment {
   paymentHash: string;
@@ -208,11 +202,20 @@ export interface OutgoingPayment {
   createdAt: Date;
 }
 
+/* Websocket payload for payment */
+export interface WebsocketPayment {
+  type: string;
+  amountSat: number;
+  paymentHash: string;
+  externalId: string;
+}
+
 export interface PhoenixdClient {
   createInvoice(params: CreateInvoiceParams): Promise<CreateInvoiceResponse>;
-  payInvoice(params: PayInvoiceParams): Promise<PayInvoiceResponse>;
+  payInvoice(params: PayInvoiceParams): Promise<Payment>;
   createOffer(): Promise<string>;
-  payOffer(params: PayOfferParams): Promise<PayOfferResponse>;
+  payOffer(params: PayOfferParams): Promise<Payment>;
+  payLnAddress(params: PayLnAddressParams): Promise<Payment>;
   sendToAddress(params: SendToAddressParams): Promise<string>;
   listIncomingPayments(
     params?: ListIncomingPaymentsParams
@@ -222,8 +225,8 @@ export interface PhoenixdClient {
     params?: ListOutgoingPaymentsParams
   ): Promise<OutgoingPayment[]>;
   getOutgoingPayment(paymentId: string): Promise<OutgoingPayment>;
-  getInfo(): Promise<GetInfoResponse>;
-  getBalance(): Promise<GetBalanceResponse>;
+  getInfo(): Promise<NodeInfo>;
+  getBalance(): Promise<Balance>;
   listChannels(): Promise<ListChannelsResponse>;
   closeChannel(params: CloseChannelParams): Promise<string>;
   decodeInvoice(params: DecodeInvoiceParams): Promise<any>;
