@@ -53,7 +53,7 @@ export class Phoenixd extends EventEmitter implements PhoenixdClient {
   }
 
   public async payLnAddress(params: PayLnAddressParams) {
-    return this._httpClient.post("/sendtoaddress", params);
+    return this._httpClient.post("/paylnaddress", params);
   }
 
   public async sendToAddress(params: SendToAddressParams) {

@@ -87,6 +87,19 @@ describe("Phoenixd", () => {
     });
   });
 
+  describe("When payLnAddress method is called", () => {
+    it("should make correct request", async () => {
+      const data = {
+        amountSat: 1000,
+        address: "test@address.com",
+        message: "test message",
+      };
+      await pxd.payLnAddress(data);
+
+      expect(postStub).to.have.been.calledWith("/paylnaddress", data);
+    });
+  });
+
   describe("When sendToAddress method is called", () => {
     it("should make correct request", async () => {
       const data = {

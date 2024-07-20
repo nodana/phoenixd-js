@@ -101,7 +101,7 @@ export interface PayLnAddressParams {
   /** amount in satoshi. If unset, will pay the amount requested in the invoice */
   amountSat?: number;
   /** feerate in satoshi per vbyte */
-  feeRateSatByte: number;
+  message?: string;
 }
 
 export interface SendToAddressParams {
