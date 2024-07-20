@@ -151,6 +151,25 @@ export interface DecodeOfferParams {
   offer: string;
 }
 
+export interface lnUrlPayParams {
+  /** amount in satoshi */
+  amountSat: number;
+  /** the lnurl-pay resource */
+  lnurl: string;
+  /** (optional) a comment for the recipient */
+  message?: string;
+}
+
+export interface lnUrlWithdrawParams {
+  /** the lnurl-withdraw resource */
+  lnurl: string;
+}
+
+export interface lnUrlAuthParams {
+  /** the lnurl-auth resource */
+  lnurl: string;
+}
+
 export interface CreateInvoiceResponse {
   amountSat: number;
   paymentHash: string;
@@ -202,6 +221,15 @@ export interface OutgoingPayment {
   createdAt: Date;
 }
 
+export interface LnUrlWithdrawal {
+  url: string;
+  minWithdrawable: number;
+  maxWithdrawable: number;
+  description: string;
+  k1: string;
+  invoice: string;
+}
+
 /* Websocket payload for payment */
 export interface WebsocketPayment {
   type: string;
@@ -231,6 +259,9 @@ export interface PhoenixdClient {
   closeChannel(params: CloseChannelParams): Promise<string>;
   decodeInvoice(params: DecodeInvoiceParams): Promise<any>;
   decodeOffer(params: DecodeOfferParams): Promise<any>;
+  lnUrlPay(params: lnUrlPayParams): Promise<Payment>;
+  lnUrlWithdraw(params: lnUrlWithdrawParams): Promise<LnUrlWithdrawal>;
+  lnUrlAuth(params: lnUrlAuthParams): Promise<string>;
   /** connect to websocket endpoint */
   connect(): void;
   /** disconnect from websocket endpoint */

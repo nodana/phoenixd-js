@@ -13,6 +13,9 @@ import type {
   ListOutgoingPaymentsParams,
   DecodeInvoiceParams,
   DecodeOfferParams,
+  lnUrlPayParams,
+  lnUrlWithdrawParams,
+  lnUrlAuthParams,
 } from "./types";
 
 export class Phoenixd extends EventEmitter implements PhoenixdClient {
@@ -114,6 +117,18 @@ export class Phoenixd extends EventEmitter implements PhoenixdClient {
 
   public async decodeOffer(params: DecodeOfferParams) {
     return this._httpClient.post("/decodeoffer", params);
+  }
+
+  public async lnUrlPay(params: lnUrlPayParams) {
+    return this._httpClient.post("/lnurlpay", params);
+  }
+
+  public async lnUrlWithdraw(params: lnUrlWithdrawParams) {
+    return this._httpClient.post("/lnurlwithdraw", params);
+  }
+
+  public async lnUrlAuth(params: lnUrlAuthParams) {
+    return this._httpClient.post("/lnurlauth", params);
   }
 
   public connect() {

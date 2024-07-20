@@ -233,4 +233,39 @@ describe("Phoenixd", () => {
       expect(postStub).to.have.been.calledWith("/decodeoffer", data);
     });
   });
+
+  describe("When lnUrlPay method is called", () => {
+    it("should make correct request", async () => {
+      const data = {
+        amountSat: 1000,
+        lnurl: "LNURL12345",
+        message: "Test message",
+      };
+      await pxd.lnUrlPay(data);
+
+      expect(postStub).to.have.been.calledWith("/lnurlpay", data);
+    });
+  });
+
+  describe("When lnUrlWithdraw method is called", () => {
+    it("should make correct request", async () => {
+      const data = {
+        lnurl: "LNURL12345",
+      };
+      await pxd.lnUrlWithdraw(data);
+
+      expect(postStub).to.have.been.calledWith("/lnurlwithdraw", data);
+    });
+  });
+
+  describe("When lnUrlAuth method is called", () => {
+    it("should make correct request", async () => {
+      const data = {
+        lnurl: "LNURL12345",
+      };
+      await pxd.lnUrlAuth(data);
+
+      expect(postStub).to.have.been.calledWith("/lnurlauth", data);
+    });
+  });
 });
