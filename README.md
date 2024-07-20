@@ -1,3 +1,5 @@
+**Works with phoenixd 0.3.1**
+
 # Phoenxid NodeJS Client
 
 Whether you're hosting your Phoenixd node on [Nodana](https://nodana.io) or self-hosting, this package makes it easier for you to make requests against your node as well as connect to the websocket endpoint and listen for events.
@@ -48,6 +50,12 @@ createOffer();
 
 ```js
 payOffer({ amountSat, offer, message });
+```
+
+### Pay Lightning Address
+
+```js
+payLnAddress({ amountSat, address, message });
 ```
 
 ### Send To Address
@@ -116,6 +124,24 @@ decodeInvoice({ invoice });
 decodeOffer({ offer });
 ```
 
+### LN-URL Pay
+
+```js
+lnUrlPay({ amountSat, lnurl, message });
+```
+
+### LN-URL Withdraw
+
+```js
+lnUrlWithdraw({ lnurl });
+```
+
+### LN-URL Auth
+
+```js
+lnUrlAuth({ lnurl });
+```
+
 ## Websocket
 
 To connect to the websocket endpoint you need to call the `connect` method:
@@ -169,6 +195,8 @@ pxd.on("message", (message: MessageEvent) => {
   // }
 });
 ```
+
+See https://phoenix.acinq.co/server/api for full API details.
 
 ## Contributing
 
