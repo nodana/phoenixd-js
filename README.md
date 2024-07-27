@@ -2,7 +2,7 @@
 
 # Phoenxid NodeJS Client
 
-Javascript client for phoenixd nodes written using Typescript with full type support. Works in any Javascript environment including NodeJS and React Native.
+Javascript client for phoenixd nodes written using Typescript with full type support. Works in different Javascript runtimes including NodeJS and React Native.
 
 ## Installation
 

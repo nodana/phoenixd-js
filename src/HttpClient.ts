@@ -1,3 +1,5 @@
+import { isNodeRuntime } from "./utils";
+
 export interface IHttpClient {
   get(path: string): Promise<any>;
   post(path: string, data: any): Promise<any>;
@@ -20,8 +22,9 @@ export class HttpClient implements IHttpClient {
 
   private _setHeaders() {
     this.headers = {
-      Authorization:
-        "Basic " + Buffer.from(":" + this.password).toString("base64"),
+      Authorization: isNodeRuntime()
+        ? "Basic " + Buffer.from(":" + this.password).toString("base64") // nodejs
+        : `Basic ${btoa(`:${this.password}`)}`, // browser
       "Content-Type": "application/x-www-form-urlencoded",
     };
   }
