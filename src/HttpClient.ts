@@ -34,7 +34,13 @@ export class HttpClient implements IHttpClient {
       };
 
       if (data) {
-        options.body = new URLSearchParams(data);
+        options.body = Object.keys(data)
+          .map((key) => {
+            return (
+              encodeURIComponent(key) + "=" + encodeURIComponent(data[key])
+            );
+          })
+          .join("&");
       }
 
       const response = await fetch(`${this.url}${path}`, options);

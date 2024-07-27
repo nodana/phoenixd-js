@@ -44,11 +44,11 @@ describe("HttpClient", () => {
   });
 
   it("should make POST request", async () => {
-    await http.post("/path", { payload: "test-payload" });
-
-    const body = new URLSearchParams({
+    const body = {
       payload: "test-payload",
-    });
+    };
+
+    await http.post("/path", body);
 
     expect(fetchStub).to.have.been.calledWith(`${NODE_URL}/path`, {
       method: "POST",
@@ -56,7 +56,7 @@ describe("HttpClient", () => {
         Authorization: "Basic OnBhc3N3b3Jk",
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      body,
+      body: "payload=test-payload",
     });
   });
 });

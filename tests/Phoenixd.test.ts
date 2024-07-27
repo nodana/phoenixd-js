@@ -6,7 +6,6 @@ chai.use(sinonChai);
 
 import { Phoenixd } from "../src/Phoenixd";
 import { HttpClient } from "../src/HttpClient";
-import { WebSocketClient } from "../src/WebSocketClient";
 
 const NODE_URL = "https://nodeurl.com";
 
@@ -22,8 +21,6 @@ describe("Phoenixd", () => {
     postStub = sinon
       .stub(HttpClient.prototype, "post")
       .resolves({ test: "abcde" });
-
-    sinon.createStubInstance(WebSocketClient);
 
     pxd = new Phoenixd(NODE_URL, "password");
   });

@@ -262,9 +262,4 @@ export interface PhoenixdClient {
   lnUrlPay(params: lnUrlPayParams): Promise<Payment>;
   lnUrlWithdraw(params: lnUrlWithdrawParams): Promise<LnUrlWithdrawal>;
   lnUrlAuth(params: lnUrlAuthParams): Promise<string>;
-  /** connect to websocket endpoint */
-  connect(): void;
-  /** disconnect from websocket endpoint */
-  disconnect(): void;
-  on(event: "open" | "close" | "message" | "error", listener: Function): this;
 }

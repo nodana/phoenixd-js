@@ -1,6 +1,5 @@
 import { EventEmitter } from "events";
 import { HttpClient, IHttpClient } from "./HttpClient";
-import { WebSocketClient, IWebSocketClient } from "./WebSocketClient";
 import type {
   PhoenixdClient,
   CreateInvoiceParams,
@@ -19,10 +18,9 @@ import type {
 } from "./types";
 
 export class Phoenixd extends EventEmitter implements PhoenixdClient {
-  private url: string;
-  private password: string;
+  url: string;
+  password: string;
   private _httpClient: IHttpClient;
-  private _webSocketClient: IWebSocketClient | undefined;
 
   public constructor(url: string, password: string) {
     super();
@@ -129,34 +127,5 @@ export class Phoenixd extends EventEmitter implements PhoenixdClient {
 
   public async lnUrlAuth(params: lnUrlAuthParams) {
     return this._httpClient.post("/lnurlauth", params);
-  }
-
-  public connect() {
-    this._webSocketClient = new WebSocketClient(this.url, this.password);
-
-    this._webSocketClient.on("open", this._onOpen.bind(this));
-    this._webSocketClient.on("close", this._onClose.bind(this));
-    this._webSocketClient.on("message", this._onMessage.bind(this));
-    this._webSocketClient.on("error", this._onError.bind(this));
-  }
-
-  public disconnect() {
-    this._webSocketClient?.disconnect();
-  }
-
-  private _onOpen() {
-    this.emit("open");
-  }
-
-  private _onClose() {
-    this.emit("close");
-  }
-
-  private _onMessage(message: MessageEvent) {
-    this.emit("message", message);
-  }
-
-  private _onError(e: any) {
-    this.emit("error", { error: e.message });
   }
 }
