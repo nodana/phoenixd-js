@@ -1,4 +1,3 @@
-import { EventEmitter } from "events";
 import { HttpClient, IHttpClient } from "./HttpClient";
 import type {
   PhoenixdClient,
@@ -17,14 +16,12 @@ import type {
   lnUrlAuthParams,
 } from "./types";
 
-export class Phoenixd extends EventEmitter implements PhoenixdClient {
+export class Phoenixd implements PhoenixdClient {
   url: string;
   password: string;
   private _httpClient: IHttpClient;
 
   public constructor(url: string, password: string) {
-    super();
-
     this.url = url;
     this.password = password;
     this._httpClient = new HttpClient(url, password);
